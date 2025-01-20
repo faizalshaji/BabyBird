@@ -5,6 +5,7 @@
 #include "Systems/System.h"
 #include <memory>
 #include "Systems/RenderSystem.h"
+#include "Systems/MovementSystem.h"
 
 class Game {
 public:
@@ -18,6 +19,7 @@ private:
 
     sf::RenderWindow window;
     RenderSystem renderSystem;
+    MovementSystem movementSystem;
     std::shared_ptr<Entity> bird;
     std::shared_ptr<SpriteComponent> birdSprite;
 };
