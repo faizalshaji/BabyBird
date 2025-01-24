@@ -1,6 +1,14 @@
 #pragma once
-#include "../pch.h"
+#include <SFML/Graphics.hpp>
+#include <memory>
+#include <stdexcept>
 
 struct SpriteComponent {
-    sf::CircleShape sprite;
+    sf::Texture texture;
+    sf::Sprite sprite;
+
+    SpriteComponent(const std::string& texturePath) :
+        texture(texturePath), sprite(texture)  
+    {
+    }
 };

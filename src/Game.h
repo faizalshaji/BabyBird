@@ -16,6 +16,7 @@ private:
     void processEvents();
     void update(float deltaTime);
     void render();
+    void RegisterBirdEntity();
 
     sf::RenderWindow window;
     RenderSystem renderSystem;

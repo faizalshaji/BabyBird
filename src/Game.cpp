@@ -4,21 +4,7 @@
 Game::Game()
 	: window(sf::VideoMode({ 1920u, 1080u }), "Baby Bird") {
 	
-	auto bird = std::make_shared<Entity>();
-
-	auto birdSprite = std::make_shared<SpriteComponent>();
-	birdSprite->sprite.setRadius(20.f);
-	birdSprite->sprite.setFillColor(sf::Color::Yellow);
-	birdSprite->sprite.setPosition(sf::Vector2f(100.f, 500.f));
-	bird->addComponent(birdSprite);
-
-	auto birdVelocity = std::make_shared<VelocityComponent>();
-	birdVelocity->dx = 100.f; 
-	birdVelocity->dy = 0.f; 
-	bird->addComponent(birdVelocity);
-
-	renderSystem.addEntity(bird);
-	movementSystem.addEntity(bird);
+	RegisterBirdEntity();
 }
 
 void Game::processEvents() {
@@ -48,4 +34,20 @@ void Game::run() {
 		update(deltaTime);
 		render();
 	}
+}
+
+void Game::RegisterBirdEntity()
+{
+	auto bird = std::make_shared<Entity>();
+
+	auto birdSprite = std::make_shared<SpriteComponent>("C:\\Repos\\BabyBird\\assets\\bird.png");
+	bird->addComponent(birdSprite);
+
+	auto birdVelocity = std::make_shared<VelocityComponent>();
+	birdVelocity->dx = 100.f;
+	birdVelocity->dy = 0.f;
+	bird->addComponent(birdVelocity);
+
+	renderSystem.addEntity(bird);
+	movementSystem.addEntity(bird);
 }
