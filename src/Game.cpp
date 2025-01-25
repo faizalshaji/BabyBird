@@ -47,13 +47,13 @@ void Game::RegisterBirdEntity()
 {
 	auto bird = std::make_shared<Entity>();
 
-	auto birdPosition = std::make_shared<PositionComponent>(0.f, 350.f);
+	auto birdPosition = std::make_shared<PositionComponent>(600.f, 325.f);
 	bird->addComponent(birdPosition);
 
-	auto birdSprite = std::make_shared<SpriteComponent>("D:\\Repos\\BabyBird\\assets\\bird.jpg",80,456,12);
+	auto birdSprite = std::make_shared<SpriteComponent>("D:\\Repos\\BabyBird\\assets\\bird.png", 96, 96, 5, 1);
 	bird->addComponent(birdSprite);
 
-	auto birdVelocity = std::make_shared<VelocityComponent>(100.f, 0.f);
+	auto birdVelocity = std::make_shared<VelocityComponent>(200.f, 0.f);
 	bird->addComponent(birdVelocity);
 
 	renderSystem.addEntity(bird);

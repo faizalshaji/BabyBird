@@ -25,6 +25,5 @@ private:
     MovementSystem movementSystem;
     SpawnerSystem spawnerSystem;
     std::shared_ptr<Entity> bird;
-    std::shared_ptr<SpriteComponent> birdSprite;
 };
 
