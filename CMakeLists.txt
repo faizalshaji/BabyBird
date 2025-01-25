@@ -12,6 +12,6 @@ FetchContent_Declare(SFML
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(BabyBird src/main.cpp "src/Entity.h"  "src/Systems/System.h"  "src/Game.h" "src/Game.cpp" "src/Components/VelocityComponent.h" "src/Components/SpriteComponent.h" "src/pch.h" "src/Systems/RenderSystem.h" "src/Systems/RenderSystem.cpp" "src/Systems/MovementSystem.cpp" "src/Systems/MovementSystem.h")
+add_executable(BabyBird src/main.cpp "src/Entity.h"  "src/Systems/System.h"  "src/Game.h" "src/Game.cpp" "src/Components/VelocityComponent.h" "src/Components/SpriteComponent.h" "src/pch.h" "src/Systems/RenderSystem.h" "src/Systems/RenderSystem.cpp" "src/Systems/MovementSystem.cpp" "src/Systems/MovementSystem.h" "src/Systems/SpawnerSystem.h" "src/Systems/SpawnerSystem.cpp")
 target_compile_features(BabyBird PRIVATE cxx_std_17)
 target_link_libraries(BabyBird PRIVATE SFML::Graphics)

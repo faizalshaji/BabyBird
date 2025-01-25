@@ -3,6 +3,7 @@
 #include "../Components/SpriteComponent.h"
 #include "MovementSystem.h"
 #include "../Components/VelocityComponent.h"
+#include "../Components/PositionComponent.h"
 
 void MovementSystem::addEntity(std::shared_ptr<Entity> entity) {
     entities.push_back(entity);
@@ -11,10 +12,10 @@ void MovementSystem::addEntity(std::shared_ptr<Entity> entity) {
 void MovementSystem::update(float deltaTime) {
     for (auto& entity : entities) {
         auto velocity = entity->getComponent<VelocityComponent>();
-        auto sprite = entity->getComponent<SpriteComponent>();
-        if (velocity && sprite) {
-            sf::Vector2f displacement(velocity->dx * deltaTime, velocity->dy * deltaTime);
-            sprite->sprite.move(displacement); // Move by scaled velocity
+        auto position = entity->getComponent<PositionComponent>();
+        if (velocity && position) {
+            position->position.x += velocity->dx * deltaTime;
+            position->position.y += velocity->dy * deltaTime;
         }
     }
 }
