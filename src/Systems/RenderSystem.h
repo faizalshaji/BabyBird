@@ -1,14 +1,15 @@
 #pragma once
-#include <vector>
+#include <SFML/Graphics.hpp>
 #include <memory>
+#include <vector>
 #include "../Entity.h"
-#include "System.h"
 
-class RenderSystem : public System {
-    std::vector<std::shared_ptr<Entity>> entities;
-
+class RenderSystem {
 public:
     void addEntity(std::shared_ptr<Entity> entity);
-    void update(float dt) override;
-    void render(sf::RenderWindow& window) override;
+    void update(float dt);
+    void render(sf::RenderWindow& window);
+
+private:
+    std::vector<std::shared_ptr<Entity>> entities;  // List of entities to render
 };

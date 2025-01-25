@@ -6,9 +6,39 @@
 struct SpriteComponent {
     sf::Texture texture;
     sf::Sprite sprite;
+    sf::IntRect currentFrame;  // Rectangle to hold the current frame's coordinates
+    float animationSpeed;      // Speed of the animation (time per frame)
+    float elapsedTime;         // Elapsed time for the animation timer
+    int numFrames;             // Total number of frames in the sprite sheet
+    int currentFrameIndex;     // Current frame index
 
-    SpriteComponent(const std::string& texturePath) :
-        texture(texturePath), sprite(texture)  
+    // Constructor that accepts a texture path and animation configuration
+    SpriteComponent(const std::string& texturePath, int frameWidth, int frameHeight, int numFrames, float animationSpeed = 0.1f) :
+        texture(texturePath), sprite(texture), currentFrameIndex(0), animationSpeed(animationSpeed), elapsedTime(0), numFrames(numFrames)
     {
+        if (!texture.loadFromFile(texturePath)) {
+            throw std::runtime_error("Failed to load texture from " + texturePath);
+        }
+
+        // Set the initial frame (first frame of the sprite sheet)
+        currentFrame = sf::IntRect({ 0, 0 }, {frameWidth, frameHeight});
+        sprite.setTextureRect(currentFrame);
+    }
+
+    // Update the sprite animation based on elapsed time
+    void update(float dt) {
+        elapsedTime += dt;
+        if (elapsedTime >= animationSpeed) {
+            // Move to the next frame
+            currentFrameIndex = (currentFrameIndex + 1) % numFrames;
+
+            // Update the texture rect based on the current frame
+            int frameX = currentFrameIndex * currentFrame.size.x; // X position of the frame in the sprite sheet
+            currentFrame.position.x = frameX;
+            sprite.setTextureRect(currentFrame);
+
+            // Reset the animation timer
+            elapsedTime = 0;
+        }
     }
 };
