@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "Components/VelocityComponent.h"
 #include "Components/PositionComponent.h"
+#include "Components/InputComponent.h"
 
 Game::Game()
 	: window(sf::VideoMode({ 1920u, 1080u }), "Baby Bird"), spawnerSystem(renderSystem, movementSystem) {
@@ -9,14 +10,17 @@ Game::Game()
 }
 
 void Game::processEvents() {
-	while (const std::optional event = window.pollEvent()) {
-		if (event->is<sf::Event::Closed>()) {
+	while (const auto event = window.pollEvent()) {  // pollEvent() returns a std::optional in SFML 3.0
+		if (event->is<sf::Event::Closed>()) {       // Use is<>() to check event type
 			window.close();
 		}
+		inputSystem.processInput(*event);           // Dereference the event to pass it to the InputSystem
 	}
 }
 
+
 void Game::update(float deltaTime) {
+	inputSystem.update(deltaTime);
 	movementSystem.update(deltaTime);
 	renderSystem.update(deltaTime);
 	spawnerSystem.update(deltaTime);
@@ -40,22 +44,43 @@ void Game::run() {
 
 void Game::RegisterEntities()
 {
-	RegisterBirdEntity();
+	RegisterWorldEntity();
+	RegisterPlayerEntity();
 }
 
-void Game::RegisterBirdEntity()
+void Game::RegisterWorldEntity()
 {
-	auto bird = std::make_shared<Entity>();
+	auto backgroundEntity = std::make_shared<Entity>();
 
-	auto birdPosition = std::make_shared<PositionComponent>(600.f, 325.f);
-	bird->addComponent(birdPosition);
+	auto backgroundSprite = std::make_shared<SpriteComponent>("D:\\Repos\\BabyBird\\assets\\background.png", 2304, 1296, 1, 1);
 
-	auto birdSprite = std::make_shared<SpriteComponent>("D:\\Repos\\BabyBird\\assets\\bird.png", 96, 96, 5, 1);
-	bird->addComponent(birdSprite);
+	auto backgroundPosition = std::make_shared<PositionComponent>();
+	backgroundPosition->position = sf::Vector2f(0.f, 0.f);
 
-	auto birdVelocity = std::make_shared<VelocityComponent>(200.f, 0.f);
-	bird->addComponent(birdVelocity);
+	backgroundEntity->addComponent<SpriteComponent>(backgroundSprite);
+	backgroundEntity->addComponent<PositionComponent>(backgroundPosition);
 
-	renderSystem.addEntity(bird);
-	movementSystem.addEntity(bird);
+	renderSystem.addEntity(backgroundEntity);
+
+}
+
+void Game::RegisterPlayerEntity()
+{
+	auto player = std::make_shared<Entity>();
+
+	auto position = std::make_shared<PositionComponent>(600.f, 325.f);
+	player->addComponent(position);
+
+	auto sprite = std::make_shared<SpriteComponent>("D:\\Repos\\BabyBird\\assets\\dialogue.png", 128, 128, 11, 1);
+	player->addComponent(sprite);
+
+	auto input = std::make_shared<InputComponent>(300.f);
+	player->addComponent(input);
+
+	auto velocity = std::make_shared<VelocityComponent>(0.f, 0.f);
+	player->addComponent(velocity);
+
+	inputSystem.addEntity(player);
+	renderSystem.addEntity(player);
+	movementSystem.addEntity(player);
 }

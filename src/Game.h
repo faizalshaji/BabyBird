@@ -7,6 +7,7 @@
 #include "Systems/RenderSystem.h"
 #include "Systems/MovementSystem.h"
 #include "Systems/SpawnerSystem.h"
+#include "Systems/InputSystem.h"
 
 class Game {
 public:
@@ -18,9 +19,12 @@ private:
     void update(float deltaTime);
     void render();
     void RegisterEntities();
+    void RegisterWorldEntity();
     void RegisterBirdEntity();
+    void RegisterPlayerEntity();
 
     sf::RenderWindow window;
+    InputSystem inputSystem;
     RenderSystem renderSystem;
     MovementSystem movementSystem;
     SpawnerSystem spawnerSystem;
