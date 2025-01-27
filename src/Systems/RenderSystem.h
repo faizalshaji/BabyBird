@@ -11,5 +11,5 @@ public:
     void render(sf::RenderWindow& window);
 
 private:
-    std::vector<std::shared_ptr<Entity>> entities;  // List of entities to render
+    std::vector<std::shared_ptr<Entity>> entities;
 };

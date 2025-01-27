@@ -77,10 +77,10 @@ void Game::RegisterPlayerEntity() {
 	sprite->setState("idle");  // Set initial animation state to "idle"
 	player->addComponent(sprite);
 
-	auto input = std::make_shared<InputComponent>(300.f);
+	auto input = std::make_shared<InputComponent>();
 	player->addComponent(input);
 
-	auto velocity = std::make_shared<VelocityComponent>(0.f, 0.f);
+	auto velocity = std::make_shared<VelocityComponent>(300.f, 300.f);
 	player->addComponent(velocity);
 
 	// Add player entity to all relevant systems

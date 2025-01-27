@@ -12,7 +12,7 @@ void RenderSystem::update(float dt) {
     for (auto& entity : entities) {
         auto spriteComponent = entity->getComponent<SpriteComponent>();
         if (spriteComponent) {
-            spriteComponent->update(dt);  // Update the sprite animation based on the elapsed time
+            spriteComponent->update(dt);
         }
     }
 }
@@ -26,11 +26,6 @@ void RenderSystem::render(sf::RenderWindow& window) {
             auto animationIt = spriteComponent->animations.find(spriteComponent->currentState);
             if (animationIt != spriteComponent->animations.end()) {
                 auto& currentAnimation = animationIt->second;
-
-                // Ensure the animation's texture is valid
-               
-
-                // Update the sprite's position and draw it
                 currentAnimation.sprite.setPosition(position->position);
                 window.draw(currentAnimation.sprite);
             }

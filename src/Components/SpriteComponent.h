@@ -8,7 +8,7 @@
 struct SpriteComponent {
   
     struct Animation {
-        std::shared_ptr<sf::Texture> texture; // Shared pointer for the texture
+        std::shared_ptr<sf::Texture> texture;
         sf::Sprite sprite;
         int numFrames;
         int numRows;
@@ -45,9 +45,9 @@ struct SpriteComponent {
             if (!texture->loadFromFile(texturePath)) {
                 throw std::runtime_error("Failed to load texture from " + texturePath);
             }
-            sprite.setTexture(*texture); // Bind the texture to the sprite
+            sprite.setTexture(*texture);
             currentFrame = sf::IntRect({ 0, 0 }, { frameWidth, frameHeight });
-            sprite.setTextureRect(currentFrame); // Set the initial texture rectangle
+            sprite.setTextureRect(currentFrame);
         }
 
         void update(float dt) {
@@ -68,13 +68,10 @@ struct SpriteComponent {
     };
 
 
-    std::unordered_map<std::string, Animation> animations;  // Map of animations by name
-    std::string currentState;                               // Current animation state
+    std::unordered_map<std::string, Animation> animations; 
+    std::string currentState;
 
     SpriteComponent() : currentState("idle") {}
-
-
-
 
     void addAnimation(const std::string& name, const std::string& texturePath, int frameWidth, int frameHeight, int numFrames, int numRows, float animationSpeed) {
         animations[name] = Animation(texturePath, frameWidth, frameHeight, numFrames, numRows, animationSpeed);
@@ -103,7 +100,4 @@ struct SpriteComponent {
             window.draw(animations[currentState].sprite);
         }
     }
-
-
-
 };
