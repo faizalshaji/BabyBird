@@ -1,5 +1,6 @@
 #include "InputSystem.h"
 #include "../Components/VelocityComponent.h"
+#include "../Components/SpriteComponent.h"
 
 void InputSystem::addEntity(std::shared_ptr<Entity> entity) {
     entities.push_back(entity);
@@ -14,14 +15,39 @@ void InputSystem::update(float dt) {
     for (auto& entity : entities) {
         auto inputComponent = entity->getComponent<InputComponent>();
         auto velocityComponent = entity->getComponent<VelocityComponent>();
-        if (inputComponent && velocityComponent) {
+        auto spriteComponent = entity->getComponent<SpriteComponent>();
+
+        if (inputComponent && velocityComponent && spriteComponent) {
             float dx = 0.f, dy = 0.f;
+            bool isMoving = false;  // Flag to track if any key is pressed
 
             // Map keys to movement directions
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) dy -= 1.f;  // Up
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) dy += 1.f;  // Down
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) dx -= 1.f;  // Left
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) dx += 1.f;  // Right
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
+                dy -= 1.f;
+                isMoving = true;
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
+                dy += 1.f;
+                isMoving = true;
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
+                dx -= 1.f;
+                spriteComponent->setState("run");
+                spriteComponent->animations[spriteComponent->currentState].sprite.setScale(sf::Vector2f(-1.f, 1.f)); // Flip horizontally
+                isMoving = true;
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
+                dx += 1.f;
+                spriteComponent->setState("run");
+                spriteComponent->animations[spriteComponent->currentState].sprite.setScale(sf::Vector2f(1.f, 1.f)); // Default direction
+                isMoving = true;
+            }
+
+            // If no keys are pressed, set the state to "idle"
+            if (!isMoving) {
+                spriteComponent->setState("idle");
+                spriteComponent->animations[spriteComponent->currentState].sprite.setScale(sf::Vector2f(1.f, 1.f)); // Default to facing right when idle
+            }
 
             // Normalize the direction vector
             float length = std::sqrt(dx * dx + dy * dy);

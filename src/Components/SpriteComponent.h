@@ -1,52 +1,109 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include <memory>
+#include <unordered_map>
+#include <string>
 #include <stdexcept>
+#include <memory>
 
 struct SpriteComponent {
-    sf::Texture texture;
-    sf::Sprite sprite;
-    sf::IntRect currentFrame;  // Rectangle to hold the current frame's coordinates
-    float animationSpeed;      // Speed of the animation (time per frame)
-    float elapsedTime;         // Elapsed time for the animation timer
-    int numFrames;             // Total number of frames in the sprite sheet (total number of frames across all rows)
-    int numRows;               // Number of rows in the sprite sheet
-    int currentFrameIndex;     // Current frame index (flattened index)
-    int frameWidth;            // Width of a single frame
-    int frameHeight;           // Height of a single frame
+  
+    struct Animation {
+        std::shared_ptr<sf::Texture> texture; // Shared pointer for the texture
+        sf::Sprite sprite;
+        int numFrames;
+        int numRows;
+        int frameWidth;
+        int frameHeight;
+        float animationSpeed;
+        sf::IntRect currentFrame;
+        int currentFrameIndex;
+        float elapsedTime;
 
-    // Constructor that accepts a texture path, frame size, rows, and total number of frames
-    SpriteComponent(const std::string& texturePath, int frameWidth, int frameHeight, int numFrames, int numRows, float animationSpeed = 0.1f) :
-        texture(), sprite(texture), currentFrameIndex(0), animationSpeed(animationSpeed), elapsedTime(0), numFrames(numFrames),
-        numRows(numRows), frameWidth(frameWidth), frameHeight(frameHeight)
-    {
-        if (!texture.loadFromFile(texturePath)) {
-            throw std::runtime_error("Failed to load texture from " + texturePath);
+        Animation()
+            : texture(std::make_shared<sf::Texture>()),
+            sprite(*texture),
+            numFrames(1),
+            numRows(1),
+            frameWidth(1),
+            frameHeight(1),
+            animationSpeed(0.1f),
+            currentFrameIndex(0),
+            elapsedTime(0),
+            currentFrame(sf::IntRect({ 0, 0 }, { frameWidth, frameHeight })) {
         }
 
-        // Set the initial frame (first frame of the sprite sheet)
-        currentFrame = sf::IntRect({ 0, 0 }, {frameWidth, frameHeight});
-        sprite.setTextureRect(currentFrame);
+        Animation(const std::string& texturePath, int frameWidth, int frameHeight, int numFrames, int numRows, float animationSpeed)
+            : texture(std::make_shared<sf::Texture>()),
+            sprite(*texture),
+            numFrames(numFrames),
+            numRows(numRows),
+            frameWidth(frameWidth),
+            frameHeight(frameHeight),
+            animationSpeed(animationSpeed),
+            currentFrameIndex(0),
+            elapsedTime(0) {
+            if (!texture->loadFromFile(texturePath)) {
+                throw std::runtime_error("Failed to load texture from " + texturePath);
+            }
+            sprite.setTexture(*texture); // Bind the texture to the sprite
+            currentFrame = sf::IntRect({ 0, 0 }, { frameWidth, frameHeight });
+            sprite.setTextureRect(currentFrame); // Set the initial texture rectangle
+        }
+
+        void update(float dt) {
+            elapsedTime += dt;
+            if (elapsedTime >= animationSpeed) {
+                currentFrameIndex = (currentFrameIndex + 1) % numFrames;
+
+                int frameX = (currentFrameIndex % (numFrames / numRows)) * frameWidth;
+                int frameY = (currentFrameIndex / (numFrames / numRows)) * frameHeight;
+
+                currentFrame.position.x = frameX;
+                currentFrame.position.y = frameY;
+                sprite.setTextureRect(currentFrame);
+
+                elapsedTime = 0;
+            }
+        }
+    };
+
+
+    std::unordered_map<std::string, Animation> animations;  // Map of animations by name
+    std::string currentState;                               // Current animation state
+
+    SpriteComponent() : currentState("idle") {}
+
+
+
+
+    void addAnimation(const std::string& name, const std::string& texturePath, int frameWidth, int frameHeight, int numFrames, int numRows, float animationSpeed) {
+        animations[name] = Animation(texturePath, frameWidth, frameHeight, numFrames, numRows, animationSpeed);
+        if (!animations[name].texture || !animations[name].texture->getNativeHandle()) {
+            throw std::runtime_error("Failed to load texture for animation: " + name);
+        }
     }
 
-    // Update the sprite animation based on elapsed time
+    void setState(const std::string& state) {
+        if (animations.find(state) != animations.end()) {
+            currentState = state;
+        }
+        else {
+            throw std::runtime_error("Animation state " + state + " not found.");
+        }
+    }
+
     void update(float dt) {
-        elapsedTime += dt;
-        if (elapsedTime >= animationSpeed) {
-            // Move to the next frame
-            currentFrameIndex = (currentFrameIndex + 1) % numFrames;
-
-            // Calculate the row and column of the current frame
-            int frameX = (currentFrameIndex % (numFrames / numRows)) * frameWidth;  // Column (X)
-            int frameY = (currentFrameIndex / (numFrames / numRows)) * frameHeight;  // Row (Y)
-
-            // Update the texture rect based on the current frame
-            currentFrame.position.x = frameX;
-            currentFrame.position.y = frameY;
-            sprite.setTextureRect(currentFrame);
-
-            // Reset the animation timer
-            elapsedTime = 0;
+        if (animations.find(currentState) != animations.end()) {
+            animations[currentState].update(dt);
         }
     }
+
+    void draw(sf::RenderWindow& window) {
+        if (animations.find(currentState) != animations.end()) {
+            window.draw(animations[currentState].sprite);
+        }
+    }
+
+
+
 };

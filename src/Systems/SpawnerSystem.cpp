@@ -29,8 +29,8 @@ void SpawnerSystem::render(sf::RenderWindow& window)
 void SpawnerSystem::spawnPipe() {
     auto pipe = std::make_shared<Entity>();
 
-    auto pipeSprite = std::make_shared<SpriteComponent>("D:\\Repos\\BabyBird\\assets\\bird.png", 96, 96, 5, 1);
-    pipe->addComponent(pipeSprite);
+    //auto pipeSprite = std::make_shared<SpriteComponent>("D:\\Repos\\BabyBird\\assets\\bird.png", 96, 96, 5, 1);
+    //pipe->addComponent(pipeSprite);
 
     auto pipePosition = std::make_shared<PositionComponent>();
     pipePosition->position = sf::Vector2f(600, generateRandomYPosition());
