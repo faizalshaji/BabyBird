@@ -20,6 +20,12 @@ void InputSystem::update(float dt) {
             float dx = 0.f, dy = 0.f;
             bool isMoving = false;
 
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) {
+                spriteComponent->setState("attack");
+                continue;
+            }
+
+
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
                 dy -= 1.f;
                 isMoving = true;
