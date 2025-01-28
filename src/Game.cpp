@@ -70,11 +70,10 @@ void Game::RegisterPlayerEntity() {
 	auto position = std::make_shared<PositionComponent>(600.f, 325.f);
 	player->addComponent(position);
 
-	// Create a SpriteComponent with animations
 	auto sprite = std::make_shared<SpriteComponent>();
-	sprite->addAnimation("idle", "D:\\Repos\\BabyBird\\assets\\idle.png", 128, 128, 11, 1, 0.1f);
+	sprite->addAnimation("idle", "D:\\Repos\\BabyBird\\assets\\dialogue.png", 128, 128, 11, 1, 0.1f);
 	sprite->addAnimation("run", "D:\\Repos\\BabyBird\\assets\\walk.png", 128, 128, 8, 1, 0.1f);
-	sprite->setState("idle");  // Set initial animation state to "idle"
+	sprite->setState("idle");
 	player->addComponent(sprite);
 
 	auto input = std::make_shared<InputComponent>();
@@ -83,7 +82,6 @@ void Game::RegisterPlayerEntity() {
 	auto velocity = std::make_shared<VelocityComponent>(300.f, 300.f);
 	player->addComponent(velocity);
 
-	// Add player entity to all relevant systems
 	inputSystem.addEntity(player);
 	renderSystem.addEntity(player);
 	movementSystem.addEntity(player);
