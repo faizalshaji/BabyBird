@@ -71,9 +71,9 @@ void Game::RegisterPlayerEntity() {
 	player->addComponent(position);
 
 	auto sprite = std::make_shared<SpriteComponent>();
-	sprite->addAnimation("idle", "D:\\Repos\\BabyBird\\assets\\dialogue.png", 128, 128, 11, 1, 0.1f);
-	sprite->addAnimation("run", "D:\\Repos\\BabyBird\\assets\\walk.png", 128, 128, 8, 1, 0.1f);
-	sprite->addAnimation("attack", "D:\\Repos\\BabyBird\\assets\\attack.png", 128, 128, 8, 1, 0.1f);
+	sprite->addAnimation("idle", "C:\\Repos\\BabyBird\\assets\\dialogue.png", 128, 128, 11, 1, 0.1f);
+	sprite->addAnimation("run", "C:\\Repos\\BabyBird\\assets\\walk.png", 128, 128, 8, 1, 0.1f);
+	sprite->addAnimation("attack", "c:\\Repos\\BabyBird\\assets\\attack.png", 128, 128, 8, 1, 0.1f);
 	sprite->setState("idle");
 	player->addComponent(sprite);
 

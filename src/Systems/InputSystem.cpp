@@ -77,8 +77,8 @@ void InputSystem::update(float dt) {
                 dy /= length;
             }
 
-            velocityComponent->dx = dx * inputComponent->speed;
-            velocityComponent->dy = dy * inputComponent->speed;
+            velocityComponent->dx = dx * 200.f;
+            velocityComponent->dy = dy * 200.f;
         }
     }
 }

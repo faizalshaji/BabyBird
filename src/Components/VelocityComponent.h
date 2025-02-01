@@ -4,5 +4,5 @@ struct VelocityComponent {
     float dx;
     float dy;
 
-    VelocityComponent(float x = 0.f, float y = 0.f) : dx(x), dy(y) {}
+    VelocityComponent(float dx = 0.f, float dy = 0.f) : dx(dx), dy(dy) {}
 };
