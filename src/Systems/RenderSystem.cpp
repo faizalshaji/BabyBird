@@ -12,7 +12,9 @@ void RenderSystem::update(float dt) {
     for (auto& entity : entities) {
         auto spriteComponent = entity->getComponent<SpriteComponent>();
         if (spriteComponent) {
-            spriteComponent->update(dt);
+            if (spriteComponent->animations.find(spriteComponent -> currentState) != spriteComponent->animations.end()) {
+                spriteComponent->animations[spriteComponent->currentState].update(dt);
+            }
         }
     }
 }
