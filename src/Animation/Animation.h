@@ -1,4 +1,10 @@
-struct Animation {
+#pragma once
+#include <SFML/Graphics.hpp>
+#include <memory>
+#include <stdexcept>
+
+class Animation {
+private:
     std::shared_ptr<sf::Texture> texture;
     sf::Sprite sprite;
     int numFrames;
@@ -10,6 +16,7 @@ struct Animation {
     int currentFrameIndex;
     float elapsedTime;
 
+public:
     Animation()
         : texture(std::make_shared<sf::Texture>()),
         sprite(*texture),
@@ -33,9 +40,11 @@ struct Animation {
         animationSpeed(animationSpeed),
         currentFrameIndex(0),
         elapsedTime(0) {
+
         if (!texture->loadFromFile(texturePath)) {
             throw std::runtime_error("Failed to load texture from " + texturePath);
         }
+
         sprite.setTexture(*texture);
         currentFrame = sf::IntRect({ 0, 0 }, { frameWidth, frameHeight });
         sprite.setTextureRect(currentFrame);
@@ -56,4 +65,7 @@ struct Animation {
             elapsedTime = 0;
         }
     }
+    sf::Texture& getTexture() { return *texture; }
+
+    sf::Sprite& getSprite() { return sprite; }
 };

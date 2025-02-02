@@ -28,8 +28,8 @@ void RenderSystem::render(sf::RenderWindow& window) {
             auto animationIt = spriteComponent->animations.find(spriteComponent->currentState);
             if (animationIt != spriteComponent->animations.end()) {
                 auto& currentAnimation = animationIt->second;
-                currentAnimation.sprite.setPosition(position->position);
-                window.draw(currentAnimation.sprite);
+                currentAnimation.getSprite().setPosition(position->position);
+                window.draw(currentAnimation.getSprite());
             }
             else {
                 std::cerr << "Warning: Missing animation state '" << spriteComponent->currentState << "'.\n";

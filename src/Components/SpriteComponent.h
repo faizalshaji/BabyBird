@@ -15,9 +15,6 @@ struct SpriteComponent {
 
 	void addAnimation(const std::string& name, const std::string& texturePath, int frameWidth, int frameHeight, int numFrames, int numRows, float animationSpeed) {
 		animations[name] = Animation(texturePath, frameWidth, frameHeight, numFrames, numRows, animationSpeed);
-		if (!animations[name].texture || !animations[name].texture->getNativeHandle()) {
-			throw std::runtime_error("Failed to load texture for animation: " + name);
-		}
 	}
 
 	void setState(const std::string& state) {

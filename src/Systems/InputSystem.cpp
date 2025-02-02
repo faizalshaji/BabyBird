@@ -40,7 +40,7 @@ void InputSystem::update(float dt) {
                 dx -= 1.f;
                 spriteComponent->setState("run");
 
-                auto& sprite = spriteComponent->animations[spriteComponent->currentState].sprite;
+                auto& sprite = spriteComponent->animations[spriteComponent->currentState].getSprite();
 
                 if (sprite.getScale().x > 0.f) {
                     auto width = sprite.getLocalBounds().size.x;
@@ -55,7 +55,7 @@ void InputSystem::update(float dt) {
                 dx += 1.f;
                 spriteComponent->setState("run");
 
-                auto& sprite = spriteComponent->animations[spriteComponent->currentState].sprite;
+                auto& sprite = spriteComponent->animations[spriteComponent->currentState].getSprite();
 
                 if (sprite.getScale().x < 0.f) {
                     sprite.setOrigin({ 0.f, 0.f });
@@ -68,7 +68,7 @@ void InputSystem::update(float dt) {
 
             if (!isMoving) {
                 spriteComponent->setState("idle");
-                spriteComponent->animations[spriteComponent->currentState].sprite.setScale(sf::Vector2f(1.f, 1.f));
+                spriteComponent->animations[spriteComponent->currentState].getSprite().setScale(sf::Vector2f(1.f, 1.f));
             }
 
             float length = std::sqrt(dx * dx + dy * dy);
