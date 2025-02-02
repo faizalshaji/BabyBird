@@ -16,13 +16,4 @@ struct SpriteComponent {
 	void addAnimation(const std::string& name, const std::string& texturePath, int frameWidth, int frameHeight, int numFrames, int numRows, float animationSpeed) {
 		animations[name] = Animation(texturePath, frameWidth, frameHeight, numFrames, numRows, animationSpeed);
 	}
-
-	void setState(const std::string& state) {
-		if (animations.find(state) != animations.end()) {
-			currentState = state;
-		}
-		else {
-			throw std::runtime_error("Animation state " + state + " not found.");
-		}
-	}
 };

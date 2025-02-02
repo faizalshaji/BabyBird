@@ -74,7 +74,7 @@ void Game::RegisterPlayerEntity() {
 	sprite->addAnimation("idle", "C:\\Repos\\BabyBird\\assets\\dialogue.png", 128, 128, 11, 1, 0.1f);
 	sprite->addAnimation("run", "C:\\Repos\\BabyBird\\assets\\walk.png", 128, 128, 8, 1, 0.1f);
 	sprite->addAnimation("attack", "c:\\Repos\\BabyBird\\assets\\attack.png", 128, 128, 8, 1, 0.1f);
-	sprite->setState("idle");
+	sprite->currentState = "idle";
 	player->addComponent(sprite);
 
 	auto input = std::make_shared<InputComponent>();

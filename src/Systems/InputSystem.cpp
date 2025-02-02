@@ -21,7 +21,7 @@ void InputSystem::update(float dt) {
             bool isMoving = false;
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) {
-                spriteComponent->setState("attack");
+                spriteComponent->currentState="attack";
                 continue;
             }
 
@@ -38,7 +38,7 @@ void InputSystem::update(float dt) {
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
                 dx -= 1.f;
-                spriteComponent->setState("run");
+                spriteComponent->currentState="run";
 
                 auto& sprite = spriteComponent->animations[spriteComponent->currentState].getSprite();
 
@@ -53,7 +53,7 @@ void InputSystem::update(float dt) {
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
                 dx += 1.f;
-                spriteComponent->setState("run");
+                spriteComponent->currentState = "run";
 
                 auto& sprite = spriteComponent->animations[spriteComponent->currentState].getSprite();
 
@@ -67,7 +67,7 @@ void InputSystem::update(float dt) {
 
 
             if (!isMoving) {
-                spriteComponent->setState("idle");
+                spriteComponent->currentState = "idle";
                 spriteComponent->animations[spriteComponent->currentState].getSprite().setScale(sf::Vector2f(1.f, 1.f));
             }
 
